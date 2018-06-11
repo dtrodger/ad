@@ -21,7 +21,7 @@ class PlacementPeriod(mongodb.EmbeddedDocument):
 
 class Placement(mongodb.Document):
     placement_id = mongodb.IntField(required=True, unique=True)
-    name = mongodb.StringField()
+    name = mongodb.StringField(required=True)
     placement_period = mongodb.EmbeddedDocumentListField(PlacementPeriod)
     delivery = mongodb.EmdebbedDocumentListField(Delivery)
     created_dt = mongodb.DateTimeField(default=datetime.now())
