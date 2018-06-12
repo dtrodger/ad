@@ -1,5 +1,4 @@
-import datetime
-
+from api.apps.zelos.middleware.custom_query.aggr import pipeline_imprs_cost
 from api.apps.zelos.models.mongo.placement import (
     Delivery,
     Placement,
@@ -64,31 +63,25 @@ class ZelosMongo(MongoCRUD):
         else:
             raise TypeError('Placement MongoEngine instance required as first arg')
 
-    def placement_imprs_costs(self, placement_id):
-        placement = self.get_placement(placement_id=placement_id)
-        imps_costs = []
+    def aggr_imprs_costs(self):
+        aggr_curs = self.placement.objects.aggregate(*pipeline_imprs_cost)
 
-        for pp in placement.placement_period:
-            imps_costs.append([placement.placement_id, pp.start, pp.end, 0, pp.cpm, 0])
-            for d in pp.delivery:
-                imps_costs[-1][3] += d.impressions
-                imps_costs[-1][5] += (d.impressions / 1000.0) * imps_costs[-1][4]
-            imps_costs[-1][5] = round(imps_costs[-1][5], 2)
-
-        return imps_costs
+        return aggr_curs
 
     @staticmethod
-    def imps_costs_strs(imprs_costs):
+    def imps_costs_strs(aggr_curs):
         dt_format = '%m/%d/%Y'
         imprs_cost_strs = []
-        for imprs_cost in imprs_costs:
+        for aggr_res in aggr_curs:
             imprs_cost_str = 'Placement {0} ({1}-{2}): {3} impressions @ ${4} CPM = ${5}'.format(
-                imprs_cost[0],
-                imprs_cost[1].strftime(dt_format),
-                imprs_cost[2].strftime(dt_format),
-                '{:,}'.format(imprs_cost[3]),
-                imprs_cost[4],
-                '{:,.2f}'.format(imprs_cost[5])
+                aggr_res.get('placement_id'),
+                aggr_res.get('pp_start').strftime(dt_format),
+                aggr_res.get('pp_end').strftime(dt_format),
+                '{:,}'.format(aggr_res.get('pp_count_impressions')),
+                aggr_res.get('pp_cpm'),
+                '{:,.2f}'.format(
+                    (aggr_res.get('pp_count_impressions') / 1000.0) * aggr_res.get('pp_cpm')
+                )
             )
             imprs_cost_strs.append(imprs_cost_str)
 

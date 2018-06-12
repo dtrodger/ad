@@ -35,7 +35,7 @@ class Placement(mongodb.Document):
 
     # Allow document to be inherited for dynamic models.
     meta = {
-        'allow_inheritance': True
+        'allow_inheritance': True,
     }
 
     def __repr__(self):
