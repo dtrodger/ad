@@ -9,6 +9,9 @@ class Delivery(mongodb.EmbeddedDocument):
     embed_dt = mongodb.DateTimeField(default=datetime.now())
     embed_update_dt = mongodb.DateTimeField(default=datetime.now())
 
+    def __repr__(self):
+        return '<Delivery: {0}>'.format(self.date)
+
 
 class PlacementPeriod(mongodb.EmbeddedDocument):
     start = mongodb.DateTimeField(required=True)
@@ -17,6 +20,9 @@ class PlacementPeriod(mongodb.EmbeddedDocument):
     budget = mongodb.IntField(required=True)
     embed_dt = mongodb.DateTimeField(default=datetime.now())
     embed_update_dt = mongodb.DateTimeField(default=datetime.now())
+
+    def __repr__(self):
+        return '<PlacementPeriod: {0} - {1}>'.format(self.start, self.end)
 
 
 class Placement(mongodb.Document):
@@ -31,3 +37,6 @@ class Placement(mongodb.Document):
     meta = {
         'allow_inheritance': True
     }
+
+    def __repr__(self):
+        return '<Placement: {0} {1}>'.format(self.placement_id, self.name)
