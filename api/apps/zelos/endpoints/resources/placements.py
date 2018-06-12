@@ -2,8 +2,8 @@ from flask_restful import Resource, reqparse, abort
 from marshmallow_jsonapi.schema import ValidationError
 
 from api.apps.extensions.cache import flask_cache
-from api.apps.narcissus.middleware.mongo import NarcissusMongo
-from api.apps.narcissus.models.cache.placement import Placement
+from api.apps.zelos.middleware.mongo import ZelosMongo
+from api.apps.zelos.models.cache.placement import Placement
 from api.apps.utilities.endpoints.req_resp import (
     json_api_resp,
     json_api_not_found_resp,
@@ -17,8 +17,8 @@ class PlacementResource(Resource):
     method_decorators = [authenticate_token]
 
     def __init__(self):
-        self.narcissus_mongo = NarcissusMongo()
-        self.narcissus_serializer = Placement
+        self.zelos_mongo = ZelosMongo()
+        self.zelos_serializer = Placement
         self.request_parser = reqparse.RequestParser()
         super(PlacementResource, self).__init__()
 
@@ -35,11 +35,11 @@ class PlacementResource(Resource):
         if placement_id:
 
             # Query Mongo database for Shift
-            placement = self.narcissus_mongo.get_placement(placement_id=placement_id)
+            placement = self.zelos_mongo.get_placement(placement_id=placement_id)
 
             if placement:
                 # Query returned shift. Serialize resource into JSON API specification format.
-                resp_json = self.narcissus_serializer().dumps(placement).data
+                resp_json = self.zelos_serializer().dumps(placement).data
 
                 return json_api_resp(resp_json)
             else:
@@ -50,12 +50,12 @@ class PlacementResource(Resource):
             # TODO - allowing access to all resources without pageingation can cause a bottleneck.
 
             # Query Mongo database for all Shifts
-            shifts = self.narcissus_mongo.get_all_placements()
+            shifts = self.zelos_mongo.get_all_placements()
 
             if shifts:
 
                 # Query returned shifts. Serialize resource into JSON API specification format.
-                resp_json = self.narcissus_serializer(many=True).dumps(shifts).data
+                resp_json = self.zelos_serializer(many=True).dumps(shifts).data
 
                 return json_api_resp(resp_json)
             else:

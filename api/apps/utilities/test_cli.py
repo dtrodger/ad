@@ -2,7 +2,7 @@ import unittest
 
 from flask import current_app
 
-from api.apps.narcissus.utilities.tests_cli import cli_tests_narcissus
+from api.apps.zelos.utilities.tests_cli import cli_tests_zelos
 
 
 def cli_test_api():
@@ -12,7 +12,7 @@ def cli_test_api():
     current_app.logger.info('Running all Api tests')
 
     cli_test_app_config()
-    cli_tests_narcissus()
+    cli_tests_zelos()
 
 
 def cli_test_apps():
@@ -21,7 +21,7 @@ def cli_test_apps():
     """
     current_app.logger.info('Running all App tests')
 
-    cli_tests_narcissus()
+    cli_tests_zelos()
 
 
 def cli_test_app_config():

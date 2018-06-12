@@ -6,7 +6,7 @@ from itertools import ifilter
 
 from flask import current_app
 
-from api.apps.narcissus.middleware.mongo import NarcissusMongo
+from api.apps.zelos.middleware.mongo import ZelosMongo
 
 
 def bootstrap_centro_exersize_data(self=None):
@@ -20,10 +20,10 @@ def bootstrap_centro_exersize_data(self=None):
         placements (list): Placement MongoEngine model instances
     """
 
-    narcissus_mongo = NarcissusMongo()
+    zelos_mongo = ZelosMongo()
 
     # Ensure db empty of Placement documents
-    assert not narcissus_mongo.get_all_placements(), 'Clear Narcissus db before bootstraping Centro data'
+    assert not zelos_mongo.get_all_placements(), 'Clear Narcissus db before bootstraping Centro data'
 
     def find_existing_placement(p_id):
         """
@@ -56,7 +56,7 @@ def bootstrap_centro_exersize_data(self=None):
         pp_budget = int(placement_row[5])
 
         # Initialize PlacementPeriod embedded document
-        placement_period = [narcissus_mongo.init_placement_period(start=pp_start, end=pp_end, cmp=pp_cmp,
+        placement_period = [zelos_mongo.init_placement_period(start=pp_start, end=pp_end, cmp=pp_cmp,
                                                                   budget=pp_budget)]
 
         return placement_period
@@ -86,7 +86,7 @@ def bootstrap_centro_exersize_data(self=None):
                 # Init PlacementPeriod model instance and append to existing Placement model placement_period attribute
                 placement_period = init_pp_from_csv_row(placement_row)
                 existing_p = find_existing_placement(p_id)
-                narcissus_mongo.update(existing_p, placement_period=existing_p.placement_period + placement_period)
+                zelos_mongo.update(existing_p, placement_period=existing_p.placement_period + placement_period)
 
             else:
 
@@ -94,7 +94,7 @@ def bootstrap_centro_exersize_data(self=None):
                 placement_period = init_pp_from_csv_row(placement_row)
                 p_name = placement_row[1]
 
-                placement = narcissus_mongo.create_placement(placement_id=p_id, name=p_name,
+                placement = zelos_mongo.create_placement(placement_id=p_id, name=p_name,
                                                              placement_period=placement_period)
 
                 placements.append(placement)
@@ -110,7 +110,7 @@ def bootstrap_centro_exersize_data(self=None):
         d_impressions = int(delivery_row[2])
 
         # Initialize Delivery embedded document
-        delivery = [narcissus_mongo.init_delivery(date=d_date, impressions=d_impressions)]
+        delivery = [zelos_mongo.init_delivery(date=d_date, impressions=d_impressions)]
 
         return delivery
 
@@ -141,26 +141,25 @@ def bootstrap_centro_exersize_data(self=None):
     # Batch update Placement documents with Delivery embedded documents
     for placement_id, deliveries in placement_deliveries.iteritems():
         existing_p = find_existing_placement(placement_id)
-        narcissus_mongo.update(existing_p, delivery=deliveries)
+        zelos_mongo.update(existing_p, delivery=deliveries)
 
     # if called on TestCase.setUp, set list attr == to Placement instances
     if self:
         self.placements = placements
 
-
-    narcissus_mongo.cost_impressions_delivered(1)
+    zelos_mongo.cost_impressions_delivered(1)
 
     # Return newly saved Placement MongeEngine Document model instances
     return placements
 
 
-def drop_narcissus_collections():
+def drop_zelos_collections():
     """
-    Drops all Narcissus Mongo collections.
+    Drops all Zelos Mongo collections.
     """
 
-    narcissus_mongo = NarcissusMongo()
-    narcissus_mongo.drop_collection(narcissus_mongo.placement)
+    zelos_mongo = ZelosMongo()
+    zelos_mongo.drop_collection(zelos_mongo.placement)
 
 
 def random_placement_period():
