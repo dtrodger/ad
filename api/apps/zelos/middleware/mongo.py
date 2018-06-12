@@ -1,4 +1,9 @@
-from api.apps.zelos.middleware.custom_query.aggr import pipeline_imprs_cost
+import datetime
+
+from api.apps.zelos.middleware.custom_query.aggr import (
+    q_pipeline_imprs_cost,
+    q_pipeline_imprs_cost_range_factory
+)
 from api.apps.zelos.models.mongo.placement import (
     Delivery,
     Placement,
@@ -64,14 +69,40 @@ class ZelosMongo(MongoCRUD):
             raise TypeError('Placement MongoEngine instance required as first arg')
 
     def aggr_imprs_costs(self):
-        aggr_curs = self.placement.objects.aggregate(*pipeline_imprs_cost)
+        aggr_curs = self.placement.objects.aggregate(*q_pipeline_imprs_cost)
+
+        return aggr_curs
+
+    def aggr_imprs_costs_range(self, d_start, d_end):
+        q_pipeline_imprs_cost_range = q_pipeline_imprs_cost_range_factory(d_start, d_end)
+        aggr_curs = self.placement.objects.aggregate(*q_pipeline_imprs_cost_range)
 
         return aggr_curs
 
     @staticmethod
-    def imps_costs_strs(aggr_curs):
+    def imprs_costs_range_str(start, end, aggr_curs):
         dt_format = '%m/%d/%Y'
-        imprs_cost_strs = []
+        impressions = 0
+        cost = 0
+
+        for aggr_res in aggr_curs:
+            impressions += aggr_res.get('count_impressions')
+            cost += (aggr_res.get('count_impressions') / 1000) * aggr_res.get('pp_cpm')
+
+        imprs_cost = 'Total ({0}-{1}): {2} impressions, ${3}'.format(
+            start.strftime(dt_format),
+            end.strftime(dt_format),
+            '{:,}'.format(impressions),
+            '{:,}'.format(cost)
+        )
+
+        return imprs_cost
+
+    @staticmethod
+    def imprs_costs_strs(aggr_curs):
+        dt_format = '%m/%d/%Y'
+        imprs_costs = []
+
         for aggr_res in aggr_curs:
             imprs_cost_str = 'Placement {0} ({1}-{2}): {3} impressions @ ${4} CPM = ${5}'.format(
                 aggr_res.get('placement_id'),
@@ -79,10 +110,10 @@ class ZelosMongo(MongoCRUD):
                 aggr_res.get('pp_end').strftime(dt_format),
                 '{:,}'.format(aggr_res.get('pp_count_impressions')),
                 aggr_res.get('pp_cpm'),
-                '{:,.2f}'.format(
-                    (aggr_res.get('pp_count_impressions') / 1000.0) * aggr_res.get('pp_cpm')
+                '{:,}'.format(
+                    (aggr_res.get('pp_count_impressions') / 1000) * aggr_res.get('pp_cpm')
                 )
             )
-            imprs_cost_strs.append(imprs_cost_str)
+            imprs_costs.append(imprs_cost_str)
 
-        return imprs_cost_strs
+        return imprs_costs
