@@ -11,6 +11,7 @@ from api.apps.narcissus.utilities.mongo_cli import (
 )
 from api.apps.narcissus.utilities.tests_cli import (
     cli_tests_narcissus,
+    cli_tests_narcissus_endpoints,
     cli_tests_narcissus_middleware,
     cli_tests_narcissus_models
 )
@@ -18,6 +19,12 @@ from api.apps.utilities.mongo_cli import (
     cli_bootstrap_db,
     cli_clear_db
 )
+from api.apps.utilities.test_cli import (
+    cli_test_api,
+    cli_test_app_config,
+    cli_test_apps
+)
+
 
 # Initialize Flask object.
 app = create_app(os.getenv('CENTRO_FLASK_CONFIG') or 'develop')
@@ -33,13 +40,31 @@ def make_shell_context():
 @app.cli.command()
 def test_api():
     """Test API"""
-    cli_tests_narcissus()
+    cli_test_api()
+
+
+@app.cli.command()
+def test_app_config():
+    """Test application configation"""
+    cli_test_app_config()
+
+
+@app.cli.command()
+def test_apps_config():
+    """Test all Apps"""
+    cli_test_apps()
 
 
 @app.cli.command()
 def test_narcissus():
     """Test Narcissus"""
     cli_tests_narcissus()
+
+
+@app.cli.command()
+def test_narcissus_endpoints():
+    """Test Narcissus endpoints"""
+    cli_tests_narcissus_endpoints()
 
 
 @app.cli.command()

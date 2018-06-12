@@ -9,9 +9,12 @@ from flask import current_app
 from api.apps.narcissus.middleware.mongo import NarcissusMongo
 
 
-def bootstrap_centro_exersize_data():
+def bootstrap_centro_exersize_data(self=None):
     """
     Mocks Placement MongoEngine models with data from Centro Exersize
+
+    Argument:
+        self (TestCase): if called on TestCase.setUp, set list attr == to Placement instances
 
     Return:
         placements (list): Placement MongoEngine model instances
@@ -139,6 +142,13 @@ def bootstrap_centro_exersize_data():
     for placement_id, deliveries in placement_deliveries.iteritems():
         existing_p = find_existing_placement(placement_id)
         narcissus_mongo.update(existing_p, delivery=deliveries)
+
+    # if called on TestCase.setUp, set list attr == to Placement instances
+    if self:
+        self.placements = placements
+
+
+    narcissus_mongo.cost_impressions_delivered(1)
 
     # Return newly saved Placement MongeEngine Document model instances
     return placements

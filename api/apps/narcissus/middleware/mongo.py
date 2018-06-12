@@ -1,7 +1,3 @@
-import uuid
-
-from flask import current_app
-
 from api.apps.narcissus.models.mongo.placement import (
     Delivery,
     Placement,
