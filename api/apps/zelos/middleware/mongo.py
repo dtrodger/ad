@@ -51,7 +51,7 @@ class ZelosMongo(MongoCRUD):
 
         return new_delivery
 
-    def init_placement_period(self, start, end, cmp, budget, delivery):
+    def init_placement_period(self, start, end, cmp, budget, delivery=None):
         new_placement_period = self.placement_period(start=start, end=end, cmp=cmp, budget=budget, delivery=delivery)
 
         return new_placement_period
