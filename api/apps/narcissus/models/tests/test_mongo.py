@@ -39,7 +39,8 @@ class PlacementMongoTests(TestCase):
 
     def test_init_placement_period(self):
         pp_start, pp_end = random_placement_period()
-        placement_period = self.placement_period(start=pp_start, end=pp_end, cmp=1, budget=1)
+        deliveries = [self.delivery(date=datetime.datetime.now(), impressions=10)]
+        placement_period = self.placement_period(start=pp_start, end=pp_end, cmp=1, budget=1, delivery=deliveries)
         self.assertIsInstance(placement_period, self.placement_period)
 
     def test_delivery_crud(self):
@@ -48,9 +49,9 @@ class PlacementMongoTests(TestCase):
         deliveries = [self.delivery(date=datetime.datetime.now(), impressions=10)]
 
         pp_start, pp_end = random_placement_period()
-        placement_periods = [self.placement_period(start=pp_start, end=pp_end, cmp=1, budget=1)]
+        placement_periods = [self.placement_period(start=pp_start, end=pp_end, cmp=1, budget=1, delivery=deliveries)]
 
-        placement = self.placement(placement_id=1, name='Sports', placement_period=placement_periods, delivery=deliveries)
+        placement = self.placement(placement_id=1, name='Sports', placement_period=placement_periods)
         placement.save()
         self.assertIsInstance(placement, self.placement)
 

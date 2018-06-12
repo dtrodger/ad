@@ -18,6 +18,7 @@ class PlacementPeriod(mongodb.EmbeddedDocument):
     end = mongodb.DateTimeField(required=True)
     cmp = mongodb.IntField(required=True)
     budget = mongodb.IntField(required=True)
+    delivery = mongodb.EmbeddedDocumentListField(Delivery)
     embed_dt = mongodb.DateTimeField(default=datetime.now())
     embed_update_dt = mongodb.DateTimeField(default=datetime.now())
 
@@ -29,7 +30,6 @@ class Placement(mongodb.Document):
     placement_id = mongodb.IntField(required=True, unique=True)
     name = mongodb.StringField(required=True)
     placement_period = mongodb.EmbeddedDocumentListField(PlacementPeriod)
-    delivery = mongodb.EmbeddedDocumentListField(Delivery)
     created_dt = mongodb.DateTimeField(default=datetime.now())
     updated_dt = mongodb.DateTimeField(default=datetime.now())
 
