@@ -7,6 +7,7 @@ from api.apps import create_app
 from api.apps.extensions import mongodb
 from api.apps.narcissus.utilities.tests_cli import (
     cli_tests_narcissus,
+    cli_tests_narcissus_middleware,
     cli_tests_narcissus_models
 )
 
@@ -23,8 +24,14 @@ def make_shell_context():
 # Unit tests.
 @app.cli.command()
 def test_narcissus():
-    """Test Narcissus models"""
+    """Test Narcissus"""
     cli_tests_narcissus()
+
+
+@app.cli.command()
+def test_narcissus_middleware():
+    """Test Narcissus middleware"""
+    cli_tests_narcissus_middleware()
 
 
 @app.cli.command()
