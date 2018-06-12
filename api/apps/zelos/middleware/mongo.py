@@ -1,3 +1,5 @@
+import datetime
+
 from api.apps.zelos.models.mongo.placement import (
     Delivery,
     Placement,
@@ -51,8 +53,8 @@ class ZelosMongo(MongoCRUD):
 
         return new_delivery
 
-    def init_placement_period(self, start, end, cmp, budget, delivery=None):
-        new_placement_period = self.placement_period(start=start, end=end, cmp=cmp, budget=budget, delivery=delivery)
+    def init_placement_period(self, start, end, cpm, budget, delivery=None):
+        new_placement_period = self.placement_period(start=start, end=end, cpm=cpm, budget=budget, delivery=delivery)
 
         return new_placement_period
 
@@ -61,3 +63,33 @@ class ZelosMongo(MongoCRUD):
             return self.update(placement, **kwargs)
         else:
             raise TypeError('Placement MongoEngine instance required as first arg')
+
+    def placement_imprs_costs(self, placement_id):
+        placement = self.get_placement(placement_id=placement_id)
+        imps_costs = []
+
+        for pp in placement.placement_period:
+            imps_costs.append([placement.placement_id, pp.start, pp.end, 0, pp.cpm, 0])
+            for d in pp.delivery:
+                imps_costs[-1][3] += d.impressions
+                imps_costs[-1][5] += (d.impressions / 1000.0) * imps_costs[-1][4]
+            imps_costs[-1][5] = round(imps_costs[-1][5], 2)
+
+        return imps_costs
+
+    @staticmethod
+    def imps_costs_strs(imprs_costs):
+        dt_format = '%m/%d/%Y'
+        imprs_cost_strs = []
+        for imprs_cost in imprs_costs:
+            imprs_cost_str = 'Placement {0} ({1}-{2}): {3} impressions @ ${4} CPM = ${5}'.format(
+                imprs_cost[0],
+                imprs_cost[1].strftime(dt_format),
+                imprs_cost[2].strftime(dt_format),
+                '{:,}'.format(imprs_cost[3]),
+                imprs_cost[4],
+                '{:,.2f}'.format(imprs_cost[5])
+            )
+            imprs_cost_strs.append(imprs_cost_str)
+
+        return imprs_cost_strs

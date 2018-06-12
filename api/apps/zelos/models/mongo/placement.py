@@ -16,7 +16,7 @@ class Delivery(mongodb.EmbeddedDocument):
 class PlacementPeriod(mongodb.EmbeddedDocument):
     start = mongodb.DateTimeField(required=True)
     end = mongodb.DateTimeField(required=True)
-    cmp = mongodb.IntField(required=True)
+    cpm = mongodb.IntField(required=True)
     budget = mongodb.IntField(required=True)
     delivery = mongodb.EmbeddedDocumentListField(Delivery)
     embed_dt = mongodb.DateTimeField(default=datetime.now())

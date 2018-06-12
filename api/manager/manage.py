@@ -5,6 +5,9 @@ import click
 
 from api.apps import create_app
 from api.apps.extensions import mongodb
+from api.apps.zelos.utilities.centro_exercise_cli import (
+    cli_zelos_centro_2a
+)
 from api.apps.zelos.utilities.mongo_cli import (
     cli_bootstrap_db_zelos,
     cli_clear_db_zelos
@@ -102,3 +105,10 @@ def db_drop():
 def db_drop_zelos():
     """Clears Zelos db"""
     cli_clear_db_zelos()
+
+
+# Centro exercises
+@app.cli.command()
+def zelos_centro_2a():
+    """Runs Centro exercise 2a"""
+    cli_zelos_centro_2a()

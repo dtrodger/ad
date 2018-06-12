@@ -52,11 +52,11 @@ def bootstrap_centro_exersize_data(self=None):
         """
         pp_start = datetime.datetime.strptime(placement_row[2], pp_dt_format)
         pp_end = datetime.datetime.strptime(placement_row[3], pp_dt_format)
-        pp_cmp = int(placement_row[4])
+        pp_cpm = int(placement_row[4])
         pp_budget = int(placement_row[5])
 
         # Initialize PlacementPeriod embedded document
-        placement_period = [zelos_mongo.init_placement_period(start=pp_start, end=pp_end, cmp=pp_cmp, budget=pp_budget)]
+        placement_period = [zelos_mongo.init_placement_period(start=pp_start, end=pp_end, cpm=pp_cpm, budget=pp_budget)]
 
         return placement_period
 
