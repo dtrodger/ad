@@ -16,6 +16,7 @@ class PlacementPeriod(Schema):
     start = fields.String()
     end = fields.DateTime()
     cmp = fields.Int()
+    delivery = fields.List(fields.Nested(Delivery))
     budget = fields.Int()
 
     class Meta:
@@ -26,7 +27,6 @@ class Placement(Schema):
     id = fields.String(required=True, dump_only=True, attribute='placement_id')
     name = fields.String()
     placement_period = fields.List(fields.Nested(PlacementPeriod))
-    delivery = fields.List(fields.Nested(Delivery))
 
     class Meta:
         type_ = 'placement'
