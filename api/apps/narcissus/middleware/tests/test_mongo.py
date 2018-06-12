@@ -1,15 +1,10 @@
-from itertools import repeat
-import os
-import sys
 import unittest
 
 from flask_testing import TestCase
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
-
 from api.apps import create_app
 from api.apps.narcissus.middleware.mongo import NarcissusMongo
-from api.apps.narcissus.utilities.mock_data import random_placement_period, drop_narcissus_collections
+from api.apps.narcissus.utilities.mock_data import drop_narcissus_collections
 
 
 # TODO - Add docstrings and comments.
