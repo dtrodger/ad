@@ -5,15 +5,15 @@ import click
 
 from api.apps import create_app
 from api.apps.extensions import mongodb
-from api.apps.narcissus.utilities.mongo_cli import (
-    cli_bootstrap_db_narcissus,
-    cli_clear_db_narcissus
+from api.apps.zelos.utilities.mongo_cli import (
+    cli_bootstrap_db_zelos,
+    cli_clear_db_zelos
 )
-from api.apps.narcissus.utilities.tests_cli import (
-    cli_tests_narcissus,
-    cli_tests_narcissus_endpoints,
-    cli_tests_narcissus_middleware,
-    cli_tests_narcissus_models
+from api.apps.zelos.utilities.tests_cli import (
+    cli_tests_zelos,
+    cli_tests_zelos_endpoints,
+    cli_tests_zelos_middleware,
+    cli_tests_zelos_models
 )
 from api.apps.utilities.mongo_cli import (
     cli_bootstrap_db,
@@ -45,7 +45,7 @@ def test_api():
 
 @app.cli.command()
 def test_app_config():
-    """Test application configation"""
+    """Test application configuration"""
     cli_test_app_config()
 
 
@@ -56,27 +56,27 @@ def test_apps_config():
 
 
 @app.cli.command()
-def test_narcissus():
-    """Test Narcissus"""
-    cli_tests_narcissus()
+def test_zelos():
+    """Test Zelos"""
+    cli_tests_zelos()
 
 
 @app.cli.command()
-def test_narcissus_endpoints():
-    """Test Narcissus endpoints"""
-    cli_tests_narcissus_endpoints()
+def test_zelos_endpoints():
+    """Test Zelos endpoints"""
+    cli_tests_zelos_endpoints()
 
 
 @app.cli.command()
-def test_narcissus_middleware():
-    """Test Narcissus middleware"""
-    cli_tests_narcissus_middleware()
+def test_zelos_middleware():
+    """Test Zelos middleware"""
+    cli_tests_zelos_middleware()
 
 
 @app.cli.command()
-def test_narcissus_models():
-    """Test Narcissus models"""
-    cli_tests_narcissus_models()
+def test_zelos_models():
+    """Test Zelos models"""
+    cli_tests_zelos_models()
 
 
 # DB Operations
@@ -87,9 +87,9 @@ def db_bootstrap():
 
 
 @app.cli.command()
-def db_bootstrap_narcissus():
-    """Bootstraps Narcissus db"""
-    cli_bootstrap_db_narcissus()
+def db_bootstrap_zelos():
+    """Bootstraps Zelos db"""
+    cli_bootstrap_db_zelos()
 
 
 @app.cli.command()
@@ -99,6 +99,6 @@ def db_drop():
 
 
 @app.cli.command()
-def db_drop_narcissus():
-    """Clears Narcissus db"""
-    cli_clear_db_narcissus()
+def db_drop_zelos():
+    """Clears Zelos db"""
+    cli_clear_db_zelos()

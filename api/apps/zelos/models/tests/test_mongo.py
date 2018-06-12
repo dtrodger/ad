@@ -8,12 +8,12 @@ from flask_testing import TestCase
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
 
 from api.apps import create_app
-from api.apps.narcissus.models.mongo.placement import (
+from api.apps.zelos.models.mongo.placement import (
     Delivery,
     Placement,
     PlacementPeriod
 )
-from api.apps.narcissus.utilities.mock_data import random_placement_period, drop_narcissus_collections
+from api.apps.zelos.utilities.mock_data import random_placement_period, drop_zelos_collections
 
 
 # TODO - Add docstrings and comments. Test for failures.
@@ -31,7 +31,7 @@ class PlacementMongoTests(TestCase):
         self.placement_period = PlacementPeriod
 
     def tearDown(self):
-        drop_narcissus_collections()
+        drop_zelos_collections()
 
     def test_init_delivery(self):
         delivery = self.delivery(date=datetime.datetime.now(), impressions=10)

@@ -1,4 +1,4 @@
-from api.apps.narcissus.models.mongo.placement import (
+from api.apps.zelos.models.mongo.placement import (
     Delivery,
     Placement,
     PlacementPeriod
@@ -6,9 +6,9 @@ from api.apps.narcissus.models.mongo.placement import (
 from api.apps.utilities.middleware.mongo.crud import MongoCRUD
 
 
-class NarcissusMongo(MongoCRUD):
+class ZelosMongo(MongoCRUD):
     """
-        API to handle CRUD operations against Narcissus MongoEngine models.
+    API to handle CRUD operations against Narcissus MongoEngine models.
     """
 
     def __init__(self):
@@ -16,9 +16,9 @@ class NarcissusMongo(MongoCRUD):
         self.placement = Placement
         self.placement_period = PlacementPeriod
 
-    def create_placement(self, placement_id, name, placement_period=None, delivery=None):
+    def create_placement(self, placement_id, name, placement_period=None):
         new_placement = self.create(self.placement, placement_id=placement_id, name=name,
-                                    placement_period=placement_period, delivery=delivery)
+                                    placement_period=placement_period)
 
         return new_placement
 
@@ -51,8 +51,8 @@ class NarcissusMongo(MongoCRUD):
 
         return new_delivery
 
-    def init_placement_period(self, start, end, cmp, budget):
-        new_placement_period = self.placement_period(start=start, end=end, cmp=cmp, budget=budget)
+    def init_placement_period(self, start, end, cmp, budget, delivery):
+        new_placement_period = self.placement_period(start=start, end=end, cmp=cmp, budget=budget, delivery=delivery)
 
         return new_placement_period
 
