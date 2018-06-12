@@ -3,6 +3,16 @@ import unittest
 from flask import current_app
 
 
+def cli_tests_narcissus_endpoints():
+    """
+    CLI command function for running Narcissus endpoint tests.
+    """
+
+    current_app.logger.info('Running Narcissus endpoint tests')
+    tests = unittest.TestLoader().discover('api.apps.narcissus.endpoints.tests')
+    unittest.TextTestRunner().run(tests)
+
+
 def cli_tests_narcissus_middleware():
     """
     CLI command function for running Narcissus middleware tests.
@@ -29,5 +39,6 @@ def cli_tests_narcissus():
     """
 
     current_app.logger.info('Running Narcissus tests')
+    cli_tests_narcissus_endpoints()
     cli_tests_narcissus_middleware()
     cli_tests_narcissus_models()
