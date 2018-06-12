@@ -19,7 +19,7 @@ from api.apps.narcissus.utilities.mock_data import random_placement_period, drop
 # TODO - Add docstrings and comments. Test for failures.
 
 
-class ShiftMongoTests(TestCase):
+class PlacementMongoTests(TestCase):
 
     def create_app(self):
         app = create_app(config='test')
