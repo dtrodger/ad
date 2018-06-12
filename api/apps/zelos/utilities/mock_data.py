@@ -56,8 +56,7 @@ def bootstrap_centro_exersize_data(self=None):
         pp_budget = int(placement_row[5])
 
         # Initialize PlacementPeriod embedded document
-        placement_period = [zelos_mongo.init_placement_period(start=pp_start, end=pp_end, cmp=pp_cmp,
-                                                                  budget=pp_budget)]
+        placement_period = [zelos_mongo.init_placement_period(start=pp_start, end=pp_end, cmp=pp_cmp, budget=pp_budget)]
 
         return placement_period
 
@@ -65,7 +64,7 @@ def bootstrap_centro_exersize_data(self=None):
     pp_dt_format = '%m/%d/%y'
 
     # Centro placement csv's path
-    placement_path = os.path.abspath(os.path.join(os.getcwd() + '/api/apps/narcissus/utilities/csv/placements.csv'))
+    placement_path = os.path.abspath(os.path.join(os.getcwd(), '../apps/zelos/utilities/csv/placements.csv'))
 
     # Save Placement documents from placements.csv
     with current_app.open_resource(placement_path, 'r') as plac_f:
@@ -104,13 +103,13 @@ def bootstrap_centro_exersize_data(self=None):
         Helper to initialize Delivery embedded documents from csv row
 
         Return:
-            delivery (list): list with Delivery embedded document
+            delivery (Delivery)
         """
         d_date = datetime.datetime.strptime(delivery_row[1], d_dt_format)
         d_impressions = int(delivery_row[2])
 
         # Initialize Delivery embedded document
-        delivery = [zelos_mongo.init_delivery(date=d_date, impressions=d_impressions)]
+        delivery = zelos_mongo.init_delivery(date=d_date, impressions=d_impressions)
 
         return delivery
 
@@ -118,10 +117,7 @@ def bootstrap_centro_exersize_data(self=None):
     d_dt_format = '%m/%d/%Y'
 
     # Centro delivery csv's path
-    delivery_path = os.path.abspath(os.path.join(os.getcwd() + '/api/apps/narcissus/utilities/csv/delivery.csv'))
-
-    # Set dict for batch Delivery update
-    placement_deliveries = dict()
+    delivery_path = os.path.abspath(os.path.join(os.getcwd(), '../apps/zelos/utilities/csv/delivery.csv'))
 
     with current_app.open_resource(delivery_path, 'r') as del_f:
 
@@ -132,22 +128,19 @@ def bootstrap_centro_exersize_data(self=None):
         for delivery_row in del_csv:
             delivery = init_delviery_from_csv_row(delivery_row)
             p_id = int(delivery_row[0])
+            existing_p = find_existing_placement(p_id)
 
-            if p_id in placement_deliveries.keys():
-                placement_deliveries[p_id] = placement_deliveries[p_id] + delivery
-            else:
-                placement_deliveries[p_id] = delivery
+            for pp in existing_p.placement_period:
+                if pp.start <= delivery.date <= pp.end:
+                    pp.delivery = pp.delivery + [delivery]
 
     # Batch update Placement documents with Delivery embedded documents
-    for placement_id, deliveries in placement_deliveries.iteritems():
-        existing_p = find_existing_placement(placement_id)
-        zelos_mongo.update(existing_p, delivery=deliveries)
+    for placement in placements:
+        placement.save()
 
     # if called on TestCase.setUp, set list attr == to Placement instances
     if self:
         self.placements = placements
-
-    zelos_mongo.cost_impressions_delivered(1)
 
     # Return newly saved Placement MongeEngine Document model instances
     return placements
