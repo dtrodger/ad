@@ -25,7 +25,6 @@ class PlacementResource(Resource):
     def __repr__(self):
         return '<{0}> Flask-Restful Resource'.format(self.__class__.__name__)
 
-    @flask_cache.memoize(timeout=50)
     def get(self, placement_id=None):
         """
         Handles HTTP GET requests to /narcissus/placement - /narcissus/placement/<string:placement_id>
@@ -40,6 +39,7 @@ class PlacementResource(Resource):
         else:
             return self.query_resource_all()
 
+    @flask_cache.memoize(timeout=50)
     def query_resource(self, placement_id):
         # Query Mongo database for Shift
         placement = self.zelos_mongo.get_placement(placement_id=placement_id)
@@ -53,6 +53,7 @@ class PlacementResource(Resource):
             # Resource not found.
             return json_api_not_found_resp()
 
+    @flask_cache.memoize(timeout=50)
     def query_resource_all(self):
         # Requesting all resources
         # TODO - allowing access to all resources without pageingation can cause a bottleneck.
@@ -70,6 +71,7 @@ class PlacementResource(Resource):
             # Resources not found.
             return json_api_not_found_resp()
 
+    @flask_cache.memoize(timeout=50)
     @staticmethod
     def query_2a():
         imprs_costs = centro_exercise_2a()
