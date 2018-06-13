@@ -123,8 +123,8 @@ def zelos_centro_2b():
 
 
 @app.cli.command()
-@click.option('--d-start', default=datetime.datetime(2017, 11, 22), help='Delivery start date', required=False)
-@click.option('--d-end', default=datetime.datetime(2017, 12, 5), help='Delivery end date', required=False)
-def zelos_centro_2b(d_start, d_end):
+@click.option('--start', default=datetime.datetime(2017, 11, 22), help='Delivery start date', required=False)
+@click.option('--end', default=datetime.datetime(2017, 12, 5), help='Delivery end date', required=False)
+def zelos_centro_2b(start, end):
     """Runs Centro exercise 2b"""
-    cli_zelos_centro_2b(d_start, d_end)
+    cli_zelos_centro_2b(start, end)
