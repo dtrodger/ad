@@ -6,7 +6,6 @@ from flask_testing import TestCase
 
 from api.apps import create_app
 from api.apps.zelos.utilities.mock_data import bootstrap_centro_exersize_data, drop_zelos_collections
-from api.apps.zelos.models.cache.placement import PlacementPeriod
 from api.apps.zelos.middleware.mongo import ZelosMongo
 
 
@@ -22,8 +21,6 @@ class ZelosEndpointTests(TestCase):
     def setUp(self):
         self.zelos_mongo = ZelosMongo()
         self.headers = {
-            'Content-Type': 'application/vnd.api+json',
-            'Accept': 'application/vnd.api+json',
             'Authorization': current_app.config['API_TOKEN']
         }
         drop_zelos_collections()
@@ -31,6 +28,10 @@ class ZelosEndpointTests(TestCase):
 
     def tearDown(self):
         drop_zelos_collections()
+
+    def test_get_q_2a(self):
+        resp = self.client.get(url_for('zelos', q='2a'), headers=self.headers)
+        self.assert200(resp)
 
     def test_get_id_placement(self):
         placement_id = self.placements[0].placement_id
