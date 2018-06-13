@@ -30,6 +30,6 @@ class Placement(Schema):
 
     class Meta:
         type_ = 'placement'
-        self_view = 'narcissus'
-        self_view_many = 'narcissus'
+        self_view = 'zelos'
+        self_view_many = 'zelos'
         strict = True
