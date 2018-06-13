@@ -1,10 +1,6 @@
-import os
-import sys
 import unittest
 
 from flask import Flask
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../')))
 
 from api.apps import create_app
 

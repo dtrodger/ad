@@ -5,6 +5,7 @@ from api.apps.extensions.cache import (
 from api.apps.extensions.log import configure_logging
 from api.apps.extensions.mongoengine import mongodb
 from api.apps.extensions.rest import rest_api, http_status_codes
+from api.apps.zelos.endpoints.register_endpoints import register_zelos_endpoints
 
 
 def initialize_extensions(app):
@@ -16,7 +17,7 @@ def initialize_extensions(app):
     mongodb.init_app(app)
 
     # Flask-Restful
-    endpoint_registries = []
+    endpoint_registries = [register_zelos_endpoints]
     rest_api.init_app(app, endpoint_registries, http_status_codes)
 
     # Redis-Cache

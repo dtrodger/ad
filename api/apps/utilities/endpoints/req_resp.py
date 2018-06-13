@@ -104,7 +104,7 @@ def json_api_not_found_resp():
     return json_api_resp(not_found_json)
 
 
-def json_api_success():
+def json_api_success(message=None):
     """
     Personal interpretation on JSON API specification response for successfully received and queued payload for
     processing by worker.
@@ -112,8 +112,12 @@ def json_api_success():
     Return:
         (Flask Response)
     """
+    if message:
+        json_message = message
+    else:
+        json_message = "success"
 
-    success_json = json.dumps({"data": {"message": "success"}})
+    success_json = json.dumps({"data": {"message": json_message}})
 
     return json_api_resp(success_json)
 
