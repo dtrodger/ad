@@ -28,9 +28,6 @@ class Config(object):
     # NOT A PRODUCTION STABLE MEANS OF AUTHENTICATING
     API_TOKEN = os.environ.get('CENTRO_API_TOKEN')
 
-    # Flask-SQLAlchemy - TODO Implement JWT Authentication with SQL User Model
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SHIFTGIG_SQL_URI') or 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-
     # Flask-MongoEngine - http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/
     MONGODB_SETTINGS = {
         'host': os.environ.get('CENTRO_MONGO_HOST') or 'localhost',
