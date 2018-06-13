@@ -75,7 +75,7 @@ class TestingConfig(Config):
     TESTING = True
 
     # Logging - https://docs.python.org/2/library/logging.html
-    LOG_FILE = '/var/log/ad_api/api.log'
+    LOG_FILE = os.path.abspath(os.path.join(Config.BASE_DIR + '/manager/logs/apps.log'))
 
 class StagingConfig(Config):
 

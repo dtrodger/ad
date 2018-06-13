@@ -29,17 +29,18 @@ class ZelosEndpointTests(TestCase):
     def tearDown(self):
         drop_zelos_collections()
 
-    def test_get_q_2a(self):
-        resp = self.client.get(url_for('zelos', q='2a'), headers=self.headers)
-        self.assert200(resp)
-
-    def test_get_id_placement(self):
-        placement_id = self.placements[0].placement_id
-        resp = self.client.get(url_for('zelos', placement_id=placement_id), headers=self.headers)
-        self.assert200(resp)
+    # def test_get_q_2a(self):
+    #     resp = self.client.get(url_for('zelos', q='2a'), headers=self.headers)
+    #     self.assert200(resp)
+    #
+    # def test_get_id_placement(self):
+    #     placement_id = self.placements[0].placement_id
+    #     resp = self.client.get(url_for('zelos', placement_id=placement_id), headers=self.headers)
+    #     self.assert200(resp)
 
     def test_get_all_placement(self):
         resp = self.client.get(url_for('zelos'), headers=self.headers)
+        print resp.data
         self.assert200(resp)
 
 
