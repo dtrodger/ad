@@ -34,11 +34,11 @@ class PlacementResource(Resource):
         req_args = self.parse_get()
 
         if placement_id:
-            self.query_resource(placement_id)
+            return self.query_resource(placement_id)
         elif req_args.get('q'):
             return getattr(self, 'query_{0}'.format(req_args['q']))()
         else:
-            self.query_resource_all()
+            return self.query_resource_all()
 
     def query_resource(self, placement_id):
         # Query Mongo database for Shift
