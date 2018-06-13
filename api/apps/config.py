@@ -66,15 +66,6 @@ class DevelopmentConfig(Config):
     # Logging - https://docs.python.org/2/library/logging.html
     LOG_FILE = os.path.abspath(os.path.join(Config.BASE_DIR + '/manager/logs/apps.log'))
 
-    # Flask-SQLAlchemy
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-    # Boto SQS
-    SQS_PONOS_Q = os.environ.get('CENTRO_DEV_SQS_PONOS_Q')
-
-    # Boto SNS
-    SQS_PONOS_Q_TOPIC = os.environ.get('CENTRO_DEV_SQS_PONOS_Q_TOPIC')
-
 
 class TestingConfig(Config):
 
@@ -84,17 +75,7 @@ class TestingConfig(Config):
     TESTING = True
 
     # Logging - https://docs.python.org/2/library/logging.html
-    LOG_FILE = '/var/log/shift_api/api.log'
-
-    # Flask-SQLAlchemy
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-    # Boto SQS
-    SQS_PONOS_Q = os.environ.get('CENTRO_TEST_SQS_PONOS_Q')
-
-    # Boto SNS
-    SQS_PONOS_Q_TOPIC = os.environ.get('CENTRO_TEST_SQS_PONOS_Q_TOPIC')
-
+    LOG_FILE = '/var/log/ad_api/api.log'
 
 class StagingConfig(Config):
 
@@ -102,16 +83,7 @@ class StagingConfig(Config):
     ENV = 'staging'
 
     # Logging - https://docs.python.org/2/library/logging.html
-    LOG_FILE = '/var/log/shift_api/api.log'
-
-    # Flask-SQLAlchemy
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # Boto SQS
-    SQS_PONOS_Q = os.environ.get('CENTRO_STAGE_SQS_PONOS_Q')
-
-    # Boto SNS
-    SQS_PONOS_Q_TOPIC = os.environ.get('CENTRO_STAGE_SQS_PONOS_Q_TOPIC')
+    LOG_FILE = '/var/log/ad_api/api.log'
 
     # Sentry - https://sentry.io/welcome/
     SENTRY_DSN = os.environ.get('SENTRY_DSN')
@@ -123,17 +95,7 @@ class ProductionConfig(Config):
     ENV = 'production'
 
     # Logging - https://docs.python.org/2/library/logging.html
-    LOG_FILE = '/var/log/shift_api/api.log'
-    PONOS_WORKER_LOG_FILE = '/var/log/shift_api/ponos-worker.log'
-
-    # Flask-SQLAlchemy
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    # Boto SQS
-    SQS_PONOS_Q = os.environ.get('SHIFTGIG_PROD_SQS_PONOS_Q')
-
-    # Boto SNS
-    SQS_PONOS_Q_TOPIC = os.environ.get('SHIFTGIG_PROD_SQS_PONOS_Q_TOPIC')
+    LOG_FILE = '/var/log/ad_api/api.log'
 
     # Sentry - https://sentry.io/welcome/
     SENTRY_DSN = os.environ.get('SENTRY_DSN')
