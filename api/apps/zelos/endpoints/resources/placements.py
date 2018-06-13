@@ -71,8 +71,8 @@ class PlacementResource(Resource):
             # Resources not found.
             return json_api_not_found_resp()
 
-    @flask_cache.memoize(timeout=50)
     @staticmethod
+    @flask_cache.memoize(timeout=50)
     def query_2a():
         imprs_costs = centro_exercise_2a()
 
