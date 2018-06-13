@@ -1,0 +1,38 @@
+Zelos Microservice Specification
+
+
+GET ec2-54-162-114-102.compute-1.amazonaws.com/zelos/placement
+
+	Headers
+		Authorization - Welcome2018!
+
+	Return
+		200 - all Placement resources
+		4** - Client error with helpful message
+		500 - Server error
+	Behavior
+		Queries Mongo running as docker container on EC2 for all Placement documents. Serializes returned documents through marshmallow schema. Returns JSON API formatted resource objects.
+
+GET ec2-54-162-114-102.compute-1.amazonaws.com/zelos/placement/<placement_id>
+
+	Headers
+		Authorization - Welcome2018!
+
+	Return
+		200 - Placement resource with resource placement_id = url <placement_id>
+		4** - Client error with helpful message
+		500 - Server error
+	Behavior
+		Queries Mongo running as docker container on EC2 for Placement document matching url <placement_id>. Serializes returned document through marshmallow schemas. Returns JSON API formatted resource object.
+
+GET ec2-54-162-114-102.compute-1.amazonaws.com/zelos/placement?q=2a
+
+	Headers
+		Authorization - Welcome2018!
+
+	Return
+		200 - Centro exercise 2a resource
+		4** - Client error with helpful message
+		500 - Server error
+	Behavior
+		Queries Mongo running as docker container on EC2 for Centro exercise 2a resources. Serializes returned resources through marshmallow schemas. Returns JSON API formatted resource object.
