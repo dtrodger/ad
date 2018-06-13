@@ -25,7 +25,7 @@ class PlacementResource(Resource):
     def __repr__(self):
         return '<{0}> Flask-Restful Resource'.format(self.__class__.__name__)
 
-    # @flask_cache.memoize(timeout=50)
+    @flask_cache.memoize(timeout=50)
     def get(self, placement_id=None):
         """
         Handles HTTP GET requests to /narcissus/placement - /narcissus/placement/<string:placement_id>
