@@ -24,4 +24,5 @@ def cli_zelos_centro_2b(d_start, d_end):
     """
     current_app.logger.info('Running Zelos Centro exercise 2b')
     imprs_cost = centro_exercise_2b(d_start, d_end)
-    print imprs_cost
+    if imprs_cost:
+        print imprs_cost

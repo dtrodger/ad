@@ -4,9 +4,9 @@ Steps to run centros exercises
 2. Run Redis on localhost:6379
 3. Install pip (Python package manager)
 4. From /api run 'pip install virtualenv'
-5. run 'virtualenv evnv/bin/activate' to activate to virtual environment
+5. run 'virtualenv env/bin/activate' to activate to virtual environment
 6. From /api/manager run 'pip install -r requirements.txt'
-7. run 'export FLASK_APP=[enter app root path]/api/manager/manage' to register CLI commands
+7. run 'export FLASK_APP=[enter app root path]/apps/api/manager/manage' to register CLI commands
 8. run 'flask run'
 8. See import issue related to jinja2 template engine and Flask 1.0 removal of flask.ext imports
 9. Navigate to line within virtualenv jinja2 install shown at bottom of stack trace
